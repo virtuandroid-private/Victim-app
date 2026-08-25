@@ -1,14 +1,11 @@
 package com.virtualxposed.victim
 
 import android.os.Build
+import android.os.ParcelFileDescriptor
 import androidx.compose.runtime.Immutable
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fleeksoft.ksoup.Ksoup
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +29,9 @@ class MainViewModel : ViewModel() {
     val state: StateFlow<MainState> = _state
 
     val client = OkHttpClient()
+
+    // Demo open file descriptor, akin to an open database in an app
+    var openFilePointer: ParcelFileDescriptor? = null
 
     init {
         viewModelScope.launch {
@@ -61,6 +61,12 @@ class MainViewModel : ViewModel() {
         if (!privateFile.exists()) {
             privateFile.createNewFile()
             privateFile.writeText("This is the contents of the private file.")
+        }
+
+        val pfd = ParcelFileDescriptor.open(privateFile, ParcelFileDescriptor.MODE_READ_WRITE)
+
+        openFilePointer = pfd.also {
+            println("Open victim file descriptor: ${it.fd}")
         }
 
         _state.update {
