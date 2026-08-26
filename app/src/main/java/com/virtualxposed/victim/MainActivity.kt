@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,7 +21,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.virtualxposed.victim.ui.theme.VictimAppTheme
-import java.io.File
 
 
 class MainActivity : ComponentActivity() {
@@ -30,11 +28,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+//        val serviceIntent = Intent(this, PrivateService::class.java)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(serviceIntent)
+//        } else {
+//            startService(serviceIntent)
+//        }
+
         setContent {
             VictimAppTheme {
                 val viewModel: MainViewModel = viewModel(factory = viewModelFactory {
                     initializer {
                         MainViewModel().also {
+                            it.init()
                             val privateDir = this@MainActivity.filesDir
                             it.createPrivateFile(privateDir)
                         }

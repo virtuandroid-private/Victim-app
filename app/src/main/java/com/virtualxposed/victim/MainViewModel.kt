@@ -33,7 +33,7 @@ class MainViewModel : ViewModel() {
     // Demo open file descriptor, akin to an open database in an app
     var openFilePointer: ParcelFileDescriptor? = null
 
-    init {
+    fun init() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val response =
