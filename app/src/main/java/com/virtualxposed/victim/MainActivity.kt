@@ -1,5 +1,7 @@
 package com.virtualxposed.victim
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,12 +30,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-//        val serviceIntent = Intent(this, PrivateService::class.java)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            startForegroundService(serviceIntent)
-//        } else {
-//            startService(serviceIntent)
-//        }
+        val serviceIntent = Intent(this, PrivateService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        } else {
+            startService(serviceIntent)
+        }
 
         setContent {
             VictimAppTheme {

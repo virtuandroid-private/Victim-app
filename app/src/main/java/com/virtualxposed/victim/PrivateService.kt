@@ -7,6 +7,7 @@ import android.os.IBinder
 class PrivateService : Service() {
     private val binder = object : IPrivateService.Stub() {
         override fun sendMessage(message: String): String {
+            println("Got message: $message")
             return "Server received: '$message'"
         }
     }
