@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <permission
+        android:name="victim.ONLY_MY_OWN_APP"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
@@ -30,15 +32,26 @@
             android:name=".PrivateFileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
+            android:permission="victim.ONLY_MY_OWN_APP"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!-- Todo investigate service permissions -->
         <service
             android:name=".PrivateService"
             android:exported="false" />
+
+        <receiver
+            android:name=".BootReceiver"
+            android:permission="victim.ONLY_MY_OWN_APP"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
