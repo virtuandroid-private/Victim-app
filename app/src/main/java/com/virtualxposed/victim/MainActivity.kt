@@ -1,8 +1,11 @@
 package com.virtualxposed.victim
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -26,11 +29,46 @@ import com.virtualxposed.victim.ui.theme.VictimAppTheme
 
 
 class MainActivity : ComponentActivity() {
+    private var privateService: IPrivateService? = null
+    private var isBound = false
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            privateService = IPrivateService.Stub.asInterface(service)
+            isBound = true
+
+            val response = privateService?.sendMessage("Hello Service!")
+            println("Response from service: $response")
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            privateService = null
+            isBound = false
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val intent = Intent(this, PrivateService::class.java)
+        this.bindService(intent, connection, BIND_AUTO_CREATE)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (isBound) {
+            unbindService(connection)
+            isBound = false
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val serviceIntent = Intent(this, PrivateService::class.java)
+        val serviceIntent = Intent(this, PrivateService::class.java).apply {
+            putExtra("StartMessage", "Started private victim service!")
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(serviceIntent)
         } else {
