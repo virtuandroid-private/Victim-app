@@ -15,13 +15,16 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Immutable
 data class MainState(
     val data: String? = null,
     val version: String? = null,
     val fingerprint: String? = null,
-    val fileContent: String? = null
+    val fileContent: String? = null,
+    val accountId: String? = null,
 )
 
 class MainViewModel : ViewModel() {
@@ -51,6 +54,20 @@ class MainViewModel : ViewModel() {
             _state.update {
                 it.copy(fingerprint = "${Build.FINGERPRINT}")
             }
+        }
+    }
+
+    @OptIn(ExperimentalUuidApi::class)
+    fun createAccount(directory: File) {
+        val accountFile = File(directory, "accountInfo")
+        directory.mkdirs()
+        if (!accountFile.exists()) {
+            accountFile.createNewFile()
+            accountFile.writeText(Uuid.random().toString())
+        }
+
+        _state.update {
+            it.copy(accountId = accountFile.readText())
         }
     }
 

@@ -83,6 +83,7 @@ class MainActivity : ComponentActivity() {
                             it.init()
                             val privateDir = this@MainActivity.filesDir
                             it.createPrivateFile(privateDir)
+                            it.createAccount(privateDir)
                         }
                     }
                 })
@@ -120,6 +121,12 @@ fun StartScreen(state: MainState, modifier: Modifier = Modifier) {
                 )
                 Text(
                     text = "Private file content: ${state.fileContent}",
+                    modifier = Modifier.padding(10.dp),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                )
+                Text(
+                    text = "Unique persistent account ID: ${state.accountId}",
                     modifier = Modifier.padding(10.dp),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,
