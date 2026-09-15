@@ -6,7 +6,7 @@
 
 ### Introduction
 
-This is a sample Android application on which we test our [attack modules](https://github.com/virtuandroid-private/Attacks-private) on.
+This is a sample Android application on which we test our [attack modules](https://github.com/virtuandroid/Module-Attacks) on.
 The app performs basic operations such as network calls, file access and fingerprinting. 
 The results of these operations are shown in the app interface, which makes it immediately visible when operations are modified by 
 attack modules.
