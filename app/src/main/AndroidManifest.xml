@@ -4,6 +4,9 @@
         android:name="victim.ONLY_MY_OWN_APP"
         android:protectionLevel="signature" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -32,8 +35,8 @@
             android:name=".PrivateFileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:permission="victim.ONLY_MY_OWN_APP"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            android:permission="victim.ONLY_MY_OWN_APP">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -46,8 +49,8 @@
 
         <receiver
             android:name=".BootReceiver"
-            android:permission="victim.ONLY_MY_OWN_APP"
-            android:exported="false">
+            android:exported="false"
+            android:permission="victim.ONLY_MY_OWN_APP">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
